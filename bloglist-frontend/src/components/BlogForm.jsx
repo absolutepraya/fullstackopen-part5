@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 
 import blogService from '../services/blogs';
 
@@ -15,7 +15,6 @@ const BlogForm = ({ setBlogs, setMessage, user, toggleFormVisibility }) => {
 			url: blogUrl,
 		};
 		
-		// THIS PART!!!
 		toggleFormVisibility();
 
 		try {

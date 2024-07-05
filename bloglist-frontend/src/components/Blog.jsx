@@ -1,7 +1,59 @@
 import { useState } from 'react';
 
-const Blog = ({ blog }) => {
+import blogService from '../services/blogs';
+
+const Blog = ({ blog, setMessage, user, setBlogs }) => {
 	const [detailView, setDetailView] = useState(false);
+	const [likes, setLikes] = useState(blog.likes);
+
+	const handleLikeUpdate = async () => {
+		const updatedLikes = likes + 1;
+		const blogToUpdate = {
+			...blog,
+			author: blog.author.id,
+			likes: updatedLikes,
+		};
+		try {
+			await blogService.update(blogToUpdate.id, blogToUpdate);
+			setLikes(updatedLikes);
+		} catch (e) {
+			setMessage({
+				text: 'failed to update likes (login if you haven\'t)',
+				type: 'error',
+			});
+			setTimeout(() => {
+				setMessage({ text: null, type: null });
+			}, 5000);
+		}
+	};
+
+	const handleBlogDelete = async () => {
+		if (
+			window.confirm(
+				`remove blog ${blog.title} by ${blog.author.name}?`
+			)
+		) {
+			try {
+				await blogService.remove(blog.id);
+				await blogService.getAll().then((blogs) => setBlogs(blogs));
+				setMessage({
+					text: `blog ${blog.title} by ${blog.author.name} removed`,
+					type: 'success',
+				});
+				setTimeout(() => {
+					setMessage({ text: null, type: null });
+				}, 5000);
+			} catch (e) {
+				setMessage({
+					text: 'failed to remove blog',
+					type: 'error',
+				});
+				setTimeout(() => {
+					setMessage({ text: null, type: null });
+				}, 5000);
+			}
+		}
+	}
 
 	return (
 		<div className='blog'>
@@ -18,12 +70,21 @@ const Blog = ({ blog }) => {
 						</div>
 						<div>
 							<span className='detail-span'>
-								likes {blog.likes}
+								likes {likes}
 							</span>
-							<button>like</button>
+							<button onClick={() => handleLikeUpdate()}>
+								like
+							</button>
 						</div>
 						<div>{blog.author.name}</div>
 					</div>
+				)}
+			</div>
+			<div>
+				{user && user.username === blog.author.username && (
+					<button
+						onClick={() => handleBlogDelete()}
+					>remove</button>
 				)}
 			</div>
 		</div>
