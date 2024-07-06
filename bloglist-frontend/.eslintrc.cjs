@@ -17,12 +17,9 @@ module.exports = {
   rules: {
     "indent": [
       "error",
-      4
+      "tab"
     ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
+    "linebreak-style": 'off',
     "quotes": [
       "error",
       "single"

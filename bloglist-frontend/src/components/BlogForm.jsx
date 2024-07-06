@@ -4,78 +4,78 @@ import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 
 const BlogForm = ({ setBlogs, setMessage, user, toggleFormVisibility }) => {
-    const [blogTitle, setBlogTitle] = useState('')
-    const [blogUrl, setBlogUrl] = useState('')
+	const [blogTitle, setBlogTitle] = useState('')
+	const [blogUrl, setBlogUrl] = useState('')
 
-    const handleNewBlog = async (event) => {
-        event.preventDefault()
+	const handleNewBlog = async (event) => {
+		event.preventDefault()
 
-        const newBlog = {
-            title: blogTitle,
-            author: user.id,
-            url: blogUrl,
-        }
+		const newBlog = {
+			title: blogTitle,
+			author: user.id,
+			url: blogUrl,
+		}
 
-        toggleFormVisibility()
+		toggleFormVisibility()
 
-        try {
-            await blogService.create(newBlog)
-            await blogService.getAll().then((blogs) => setBlogs(blogs))
+		try {
+			await blogService.create(newBlog)
+			await blogService.getAll().then((blogs) => setBlogs(blogs))
 
-            setBlogTitle('')
-            setBlogUrl('')
+			setBlogTitle('')
+			setBlogUrl('')
 
-            setMessage({
-                text: `a new blog ${newBlog.title} by ${user.name} added`,
-                type: 'success',
-            })
-            setTimeout(() => {
-                setMessage({ text: null, type: null })
-            }, 5000)
-        } catch (e) {
-            setMessage({
-                text: 'failed to create a new blog',
-                type: 'error',
-            })
-            setTimeout(() => {
-                setMessage({ text: null, type: null })
-            }, 5000)
-        }
-    }
+			setMessage({
+				text: `a new blog ${newBlog.title} by ${user.name} added`,
+				type: 'success',
+			})
+			setTimeout(() => {
+				setMessage({ text: null, type: null })
+			}, 5000)
+		} catch (e) {
+			setMessage({
+				text: 'failed to create a new blog',
+				type: 'error',
+			})
+			setTimeout(() => {
+				setMessage({ text: null, type: null })
+			}, 5000)
+		}
+	}
 
-    return (
-        <div>
-            <h3>create new blog</h3>
-            <form onSubmit={handleNewBlog}>
-                <div>
-                    <span style={{ marginRight: '8px' }}>title</span>
-                    <input
-                        type='text'
-                        value={blogTitle}
-                        name='Title'
-                        onChange={({ target }) => setBlogTitle(target.value)}
-                    />
-                </div>
-                <div>
-                    <span style={{ marginRight: '8px' }}>url</span>
-                    <input
-                        type='text'
-                        value={blogUrl}
-                        name='Url'
-                        onChange={({ target }) => setBlogUrl(target.value)}
-                    />
-                </div>
-                <button type='submit'>create</button>
-            </form>
-        </div>
-    )
+	return (
+		<div>
+			<h3>create new blog</h3>
+			<form onSubmit={handleNewBlog}>
+				<div>
+					<span style={{ marginRight: '8px' }}>title</span>
+					<input
+						type='text'
+						value={blogTitle}
+						name='Title'
+						onChange={({ target }) => setBlogTitle(target.value)}
+					/>
+				</div>
+				<div>
+					<span style={{ marginRight: '8px' }}>url</span>
+					<input
+						type='text'
+						value={blogUrl}
+						name='Url'
+						onChange={({ target }) => setBlogUrl(target.value)}
+					/>
+				</div>
+				<button type='submit'>create</button>
+			</form>
+		</div>
+	)
 }
 
 BlogForm.propTypes = {
-    setBlogs: PropTypes.func.isRequired,
-    setMessage: PropTypes.func.isRequired,
-    user: PropTypes.object.isRequired,
-    toggleFormVisibility: PropTypes.func.isRequired,
+	setBlogs: PropTypes.func.isRequired,
+	setMessage: PropTypes.func.isRequired,
+	user: PropTypes.object.isRequired,
+	toggleFormVisibility: PropTypes.func.isRequired,
 }
 
 export default BlogForm
