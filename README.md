@@ -14,3 +14,4 @@ Exercises:
 - 5.9: bloglist frontend step 9
 - 5.10: bloglist frontend step 10
 - 5.11: bloglist frontend step 11
+- 5.12: bloglist frontend step 12
